@@ -1,7 +1,0 @@
-InlayHints:
-  Enabled: Yes
-  Designators: No
-  ParameterNames: Yes
-  DeducedTypes: Yes
-CompileFlags:
-  Add: [-I, "C:/Users/Admin/Documents/003Code/cxx/Moer-lite/src", -I, "C:/Users/Admin/Documents/003Code/cxx/Moer-lite/externals"]
