@@ -8,7 +8,7 @@ AreaLight::AreaLight(const Json &json) : Light(json) {
   energy = fetchOptional<Spectrum>(json, "energy", 0.0f);
   power = fetchOptional<Spectrum>(json, "power", 0.0f);
   if (energy.isZero()) {
-    // Power to energy.
+    // Power(flux) to energy(radiance).
     energy = power / shape->getArea() / PI;
   }
 }
