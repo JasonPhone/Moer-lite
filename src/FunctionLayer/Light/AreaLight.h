@@ -15,4 +15,5 @@ public:
 
 private:
   Spectrum energy;
+  Spectrum power;
 };

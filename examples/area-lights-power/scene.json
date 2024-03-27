@@ -1,6 +1,6 @@
 {
   "output" : {
-    "filename" : "test2.hdr"
+    "filename" : "test2.png"
   },
   "sampler" : {
     "type" : "independent",

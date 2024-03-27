@@ -3,7 +3,7 @@
 
 //* 平行四边形
 class Parallelogram : public Shape {
-public:
+ public:
   Parallelogram() = delete;
 
   Parallelogram(const Json &json);
@@ -18,7 +18,9 @@ public:
                                       Intersection *intersection,
                                       float *pdf) const override;
 
-public:
+  float getArea() const override { return cross(edge0, edge1).length(); }
+
+ public:
   Point3f base;
   Vector3f edge0, edge1;
 };
