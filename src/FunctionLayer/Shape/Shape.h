@@ -1,17 +1,19 @@
 #pragma once
-#include "Intersection.h"
 #include <CoreLayer/Math/Transform.h>
 #include <FunctionLayer/Acceleration/AABB.h>
 #include <FunctionLayer/Ray/Ray.h>
 #include <ResourceLayer/JsonUtil.h>
 #include <embree3/rtcore.h>
+
 #include <optional>
+
+#include "Intersection.h"
 
 class Light;
 class Material;
 
 class Shape : public Transformable {
-public:
+ public:
   Shape() = default;
 
   Shape(const Json &json);
@@ -38,11 +40,13 @@ public:
     return;
   }
 
-public:
+  virtual float getArea() const { return 0.0; }
+
+ public:
   int geometryID;
   std::shared_ptr<Light> light;
   std::shared_ptr<Material> material;
 
-protected:
+ protected:
   AABB boundingBox;
 };

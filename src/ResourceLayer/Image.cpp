@@ -20,7 +20,21 @@ void Image::setValue(const Vector2i &xy, const Vector3f &val) {
 }
 
 void Image::savePNG(const char *filename) const {
-  uint8_t *result = new uint8_t[size[0] * size[1] * channels]();
+  size_t n = size[0] * size[1] * channels;
+  uint8_t *result = new uint8_t[n]();
+  // Tone mapping.
+  //
+  //   https://knarkowicz.wordpress.com/2016/01/06/aces-filmic-tone-mapping-curve/
+  //   float a = 2.51;
+  //   float b = 0.03;
+  //   float c = 2.43;
+  //   float d = 0.59;
+  //   float e = 0.14;
+  //   for (int i = 0; i < n; i++) {
+  //     float res = data[i];
+  //     res = (res * (a * res + b)) / (res * (c * res + d) + e);
+  //     result[i] = static_cast<uint8_t>(255 * clamp(res, 0.f, 1.f));
+  //   }
   for (int i = 0; i < size[0] * size[1] * channels; ++i) {
     result[i] = static_cast<uint8_t>(255 * clamp(data[i], .0f, 1.f));
   }

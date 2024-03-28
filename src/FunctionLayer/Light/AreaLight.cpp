@@ -1,9 +1,16 @@
 #include "AreaLight.h"
+
 #include <ResourceLayer/Factory.h>
 AreaLight::AreaLight(const Json &json) : Light(json) {
   type = LightType::AreaLight;
   shape = Factory::construct_class<Shape>(json["shape"]);
-  energy = fetchRequired<Spectrum>(json, "energy");
+
+  energy = fetchOptional<Spectrum>(json, "energy", 0.0f);
+  power = fetchOptional<Spectrum>(json, "power", 0.0f);
+  if (energy.isZero()) {
+    // Power(flux) to energy(radiance).
+    energy = power / shape->getArea() / PI;
+  }
 }
 
 Spectrum AreaLight::evaluateEmission(const Intersection &intersection,
