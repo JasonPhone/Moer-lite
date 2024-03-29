@@ -1,4 +1,5 @@
 #include "AreaLight.h"
+#include "FastMath/FastMath.h"
 
 #include <ResourceLayer/Factory.h>
 AreaLight::AreaLight(const Json &json) : Light(json) {
@@ -9,7 +10,7 @@ AreaLight::AreaLight(const Json &json) : Light(json) {
   power = fetchOptional<Spectrum>(json, "power", 0.0f);
   if (energy.isZero()) {
     // Power(flux) to energy(radiance).
-    energy = power / shape->getArea() / PI;
+    energy = power / shape->getArea() / fm::pi_f;
   }
 }
 
