@@ -109,7 +109,7 @@ void Sphere::uniformSampleOnSurface(Vector2f sample, Intersection *intersection,
   float theta = fm::acos(1 - 2 * sample.x());
   float phi = 2 * fm::pi_f * sample.y();
   if (intersection) fillIntersection(0, 0, phi, theta, intersection);
-  if (pdf) *pdf = 1 / (4 * fm::pi_f);
+  if (pdf) *pdf = 1.0 / (4 * fm::pi_f);
 }
 float Sphere::getArea() const { return 4 * fm::pi_f * radius * radius; }
 REGISTER_CLASS(Sphere, "sphere")
