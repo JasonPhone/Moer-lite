@@ -113,7 +113,7 @@
     "lights" : [
       {
         "type" : "areaLight",
-        "energy" : [100, 100, 100],
+        "energy" : [4, 4, 4],
         "shape" : {
           "type" : "sphere",
           "center" : [0, 1.79, 0],

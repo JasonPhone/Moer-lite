@@ -1,4 +1,5 @@
 #include "Sphere.h"
+
 #include <ResourceLayer/Factory.h>
 
 Sphere::Sphere(const Json &json) : Shape(json) {
@@ -17,8 +18,7 @@ bool Sphere::rayIntersectShape(Ray &ray, int *primID, float *u,
   float b = dot(o2c, direction);
   float c = o2c.length() * o2c.length() - radius * radius;
   float delta = b * b - c;
-  if (delta <= 0)
-    return false; // 不相交
+  if (delta <= 0) return false;  // 不相交
   float sqrtDelta = fm::sqrt(delta);
   float t1 = b - sqrtDelta;
   float t2 = b + sqrtDelta;
@@ -43,14 +43,20 @@ bool Sphere::rayIntersectShape(Ray &ray, int *primID, float *u,
       *u = (normal[0] > .0f) ? (PI * .5f) : (PI * 1.5f);
     } else {
       float tanPhi = normal[0] / normal[2];
-      *u = fm::atan(tanPhi); // u in [-.5f * PI, .5f * PI]
-      if (normal[2] < .0f)
-        *u += PI;
+      *u = fm::atan(tanPhi);  // u in [-.5f * PI, .5f * PI]
+      if (normal[2] < .0f) *u += PI;
     }
   }
   return hit;
 }
 
+/**
+ * @param distance
+ * @param primID
+ * @param u phi.
+ * @param v theta.
+ * @param intersection
+ */
 void Sphere::fillIntersection(float distance, int primID, float u, float v,
                               Intersection *intersection) const {
   // u->phi, v->theta
@@ -81,4 +87,29 @@ void Sphere::fillIntersection(float distance, int primID, float u, float v,
   intersection->bitangent = bitangent;
 }
 
+void Sphere::uniformSampleOnSurface(Vector2f sample, Intersection *intersection,
+                                    float *pdf) const {
+  // TODO finish this
+  /*
+    c = 1 / 4pi
+    pdf(t, p) = c sint
+    pdf(t) = c sint * 2pi = 0.5 sint
+    pdf(p) = [0, pi] c sint dt = -c [0, pi] dcost = 2c = 1 / 2pi
+
+    cdf(t) = 0.5 [0, x] sint dt = -0.5 [0, x] dcost = -0.5 (cosx - 1) = 0.5 (1
+    - cosx) cdf(p) = x / 2pi
+
+    theta = acos(1 - 2e1)
+    phi = 2pi * e2
+
+    x = sint cosp
+    y = sint sinp
+    z = cost
+  */
+  float theta = fm::acos(1 - 2 * sample.x());
+  float phi = 2 * fm::pi_f * sample.y();
+  if (intersection) fillIntersection(0, 0, phi, theta, intersection);
+  if (pdf) *pdf = 1 / (4 * fm::pi_f);
+}
+float Sphere::getArea() const { return 4 * fm::pi_f * radius * radius; }
 REGISTER_CLASS(Sphere, "sphere")
