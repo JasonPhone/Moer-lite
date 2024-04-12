@@ -1,9 +1,13 @@
 #include "Triangle.h"
+
 #include <FunctionLayer/Acceleration/Linear.h>
 //--- Triangle ---
 Triangle::Triangle(int _primID, int _vtx0Idx, int _vtx1Idx, int _vtx2Idx,
                    const TriangleMesh *_mesh)
-    : primID(_primID), vtx0Idx(_vtx0Idx), vtx1Idx(_vtx1Idx), vtx2Idx(_vtx2Idx),
+    : primID(_primID),
+      vtx0Idx(_vtx0Idx),
+      vtx1Idx(_vtx1Idx),
+      vtx2Idx(_vtx2Idx),
       mesh(_mesh) {
   Point3f vtx0 = mesh->transform.toWorld(mesh->meshData->vertexBuffer[vtx0Idx]),
           vtx1 = mesh->transform.toWorld(mesh->meshData->vertexBuffer[vtx1Idx]),
@@ -28,25 +32,21 @@ bool Triangle::rayIntersectShape(Ray &ray, int *primID, float *u,
   float d = -dot(paralNormal, Vector3f{vtx0[0], vtx0[1], vtx0[2]});
   float a = dot(paralNormal, Vector3f{origin[0], origin[1], origin[2]}) + d;
   float b = dot(paralNormal, direction);
-  if (b == .0f)
-    return false; // miss
+  if (b == .0f) return false;  // miss
   float t = -a / b;
 
-  if (t < ray.tNear || t > ray.tFar)
-    return false;
+  if (t < ray.tNear || t > ray.tFar) return false;
 
   Point3f hitpoint = origin + t * direction;
   // hitpoint = vtx0 + u * e0 + v * e1, 0 <= u, v <= 1
   Vector3f v1 = cross(hitpoint - vtx0, edge1), v2 = cross(edge0, edge1);
   float u_ = v1.length() / v2.length();
-  if (dot(v1, v2) < 0)
-    u_ *= -1;
+  if (dot(v1, v2) < 0) u_ *= -1;
 
   v1 = cross(hitpoint - vtx0, edge0);
   v2 = cross(edge1, edge0);
   float v_ = v1.length() / v2.length();
-  if (dot(v1, v2) < 0)
-    v_ *= -1;
+  if (dot(v1, v2) < 0) v_ *= -1;
 
   if (u_ >= .0f && v_ >= .0f && (u_ + v_ <= 1.f)) {
     ray.tFar = t;
@@ -65,10 +65,28 @@ void Triangle::fillIntersection(float distance, int primID, float u, float v,
   return;
 }
 
+// float Triangle::getArea() const {
+//   Point3f v0 = mesh->meshData->vertexBuffer[vtx0Idx];
+//   Point3f v1 = mesh->meshData->vertexBuffer[vtx1Idx];
+//   Point3f v2 = mesh->meshData->vertexBuffer[vtx2Idx];
+//   Vector3f v01 = v1 - v0;
+//   Vector3f v02 = v2 - v0;
+//   return cross(v01, v02).length() * 0.5;
+// }
 //--- TriangleMesh ---
 TriangleMesh::TriangleMesh(const Json &json) : Shape(json) {
   const auto &filepath = fetchRequired<std::string>(json, "file");
   meshData = MeshData::loadFromFile(filepath);
+  // For triangle sampling based on area portion.
+  for (int i = 0; i < meshData->faceCount; i++) {
+    float a = getArea(i);
+    areaCdf1D.push_back(a);
+    area += a;
+  }
+  for (int i = 0; i < areaCdf1D.size(); i++) {
+    if (i) areaCdf1D[i] += areaCdf1D[i - 1];
+    areaCdf1D[i] /= area;
+  }
 }
 
 RTCGeometry TriangleMesh::getEmbreeGeometry(RTCDevice device) const {
@@ -171,4 +189,20 @@ void TriangleMesh::initInternalAcceleration() {
   // TriangleMesh的包围盒就是其内部加速结构的包围盒
   boundingBox = acceleration->boundingBox;
 }
+
+float TriangleMesh::getArea() const { return area; }
+
+float TriangleMesh::getArea(int faceIdx) const {
+  auto faceData = meshData->faceBuffer[faceIdx];
+
+  Point3f v0 = meshData->vertexBuffer[faceData[0].vertexIndex];
+  Point3f v1 = meshData->vertexBuffer[faceData[1].vertexIndex];
+  Point3f v2 = meshData->vertexBuffer[faceData[2].vertexIndex];
+
+  Vector3f v01 = v1 - v0;
+  Vector3f v02 = v2 - v0;
+
+  return cross(v01, v02).length() * 0.5;
+}
+
 REGISTER_CLASS(TriangleMesh, "triangle")

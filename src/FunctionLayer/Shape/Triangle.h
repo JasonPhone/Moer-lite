@@ -1,12 +1,13 @@
 #pragma once
-#include "Shape.h"
 #include <FunctionLayer/Acceleration/Acceleration.h>
 #include <ResourceLayer/Factory.h>
 #include <ResourceLayer/Mesh.h>
+
+#include "Shape.h"
 class TriangleMesh;
 
 class Triangle : public Shape {
-public:
+ public:
   Triangle() = default;
 
   Triangle(int _primID, int _vtx0Idx, int _vtx1Idx, int _vtx2Idx,
@@ -25,14 +26,14 @@ public:
     return;
   }
 
-public:
+ public:
   int primID;
   int vtx0Idx, vtx1Idx, vtx2Idx;
   const TriangleMesh *mesh = nullptr;
 };
 
 class TriangleMesh : public Shape {
-public:
+ public:
   TriangleMesh() = default;
 
   TriangleMesh(const Json &json);
@@ -50,14 +51,21 @@ public:
                                       Intersection *intersection,
                                       float *pdf) const override {
     // TODO finish this
+
     return;
   }
 
   virtual void initInternalAcceleration() override;
 
+  virtual float getArea() const override;
+
+  float getArea(int faceIdx) const;
+
   friend class Triangle;
 
-private:
+ private:
   std::shared_ptr<MeshData> meshData;
   std::shared_ptr<Acceleration> acceleration;
+  std::vector<float> areaCdf1D;
+  float area = 0;
 };
