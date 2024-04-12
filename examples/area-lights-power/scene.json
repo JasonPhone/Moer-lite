@@ -1,6 +1,6 @@
 {
   "output" : {
-    "filename" : "test2.png"
+    "filename" : "const.hdr"
   },
   "sampler" : {
     "type" : "independent",
@@ -65,7 +65,7 @@
           "material" : {
             "type" : "matte",
             "albedo" : [0.5, 0.5, 0.5]
-          }  
+          }
         }
       }
     ]

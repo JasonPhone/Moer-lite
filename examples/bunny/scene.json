@@ -1,6 +1,6 @@
 {
   "output" : {
-    "filename" : "bunny-2.hdr"
+    "filename" : "bunny-2.png"
   },
   "sampler" : {
     "type" : "independent",
@@ -48,7 +48,7 @@
           "type" : "matte",
           "albedo" : [0.7, 0.7, 0.7]
         }
-      }   
+      }
     ],
     "lights" : [
       {

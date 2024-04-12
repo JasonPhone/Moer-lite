@@ -1,11 +1,11 @@
 {
   "output" : {
-    "filename" : "cornell.png"
+    "filename" : "cornell-box-sphere.hdr"
   },
   "sampler" : {
     "type" : "independent",
-    "xSamples" : 4,
-    "ySamples" : 4
+    "xSamples" : 8,
+    "ySamples" : 8
   },
   "camera" : {
     "type" : "pinhole",
@@ -113,7 +113,7 @@
     "lights" : [
       {
         "type" : "areaLight",
-        "energy" : [4, 4, 4],
+        "energy" : [3, 3, 3],
         "shape" : {
           "type" : "sphere",
           "center" : [0, 1.79, 0],
