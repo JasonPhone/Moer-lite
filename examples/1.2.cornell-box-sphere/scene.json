@@ -1,6 +1,6 @@
 {
   "output" : {
-    "filename" : "cornell-box-sphere.hdr"
+    "filename" : "1.2.cornell-box-sphere.hdr"
   },
   "sampler" : {
     "type" : "independent",

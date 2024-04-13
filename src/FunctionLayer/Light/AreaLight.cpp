@@ -1,7 +1,8 @@
 #include "AreaLight.h"
-#include "FastMath/FastMath.h"
 
 #include <ResourceLayer/Factory.h>
+
+#include "FastMath/FastMath.h"
 AreaLight::AreaLight(const Json &json) : Light(json) {
   type = LightType::AreaLight;
   shape = Factory::construct_class<Shape>(json["shape"]);
@@ -27,9 +28,9 @@ LightSampleResult AreaLight::sample(const Intersection &shadingPoint,
   Vector3f shadingPoint2sample = sampleResult.position - shadingPoint.position;
 
   return {energy,
-          normalize(shadingPoint2sample),
-          shadingPoint2sample.length() - EPSILON, // distance
-          sampleResult.normal,
+          normalize(shadingPoint2sample),          // direction
+          shadingPoint2sample.length() - EPSILON,  // distance
+          sampleResult.normal,                     // normal
           pdf,
           false,
           type};

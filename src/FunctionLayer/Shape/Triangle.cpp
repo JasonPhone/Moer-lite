@@ -84,11 +84,8 @@ TriangleMesh::TriangleMesh(const Json &json) : Shape(json) {
     areaCdf1D.push_back(a);
     area += a;
   }
-  for (int i = 1; i < areaCdf1D.size(); i++) {
-    areaCdf1D[i] /= area;
-    areaCdf1D[i] += areaCdf1D[i - 1];
-  }
-  std::cout << areaCdf1D[0] << " " << areaCdf1D[meshData->faceCount] << std::endl;
+  for (int i = 1; i < areaCdf1D.size(); i++) areaCdf1D[i] += areaCdf1D[i - 1];
+  for (int i = 1; i < areaCdf1D.size(); i++) areaCdf1D[i] /= area;
 }
 
 RTCGeometry TriangleMesh::getEmbreeGeometry(RTCDevice device) const {
@@ -197,12 +194,15 @@ float TriangleMesh::getArea() const { return area; }
 float TriangleMesh::getArea(int faceIdx) const {
   auto faceData = meshData->faceBuffer[faceIdx];
 
-  Point3f v0 = meshData->vertexBuffer[faceData[0].vertexIndex];
-  Point3f v1 = meshData->vertexBuffer[faceData[1].vertexIndex];
-  Point3f v2 = meshData->vertexBuffer[faceData[2].vertexIndex];
+  Point3f p0 = transform.toWorld(
+              meshData->vertexBuffer[faceData[0].vertexIndex]),
+          p1 = transform.toWorld(
+              meshData->vertexBuffer[faceData[1].vertexIndex]),
+          p2 = transform.toWorld(
+              meshData->vertexBuffer[faceData[2].vertexIndex]);
 
-  Vector3f v01 = v1 - v0;
-  Vector3f v02 = v2 - v0;
+  Vector3f v01 = p1 - p0;
+  Vector3f v02 = p2 - p0;
 
   return cross(v01, v02).length() * 0.5;
 }
