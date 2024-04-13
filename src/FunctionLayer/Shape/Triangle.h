@@ -50,9 +50,35 @@ class TriangleMesh : public Shape {
   virtual void uniformSampleOnSurface(Vector2f sample,
                                       Intersection *intersection,
                                       float *pdf) const override {
-    // TODO finish this
+    int idx = sample.x() * meshData->faceCount;
+    float u = sample.x() * meshData->faceCount - idx;
+    fillIntersection(0, idx, u, sample.y(), intersection);
+    if (pdf) *pdf = 1.0 / meshData->faceCount;
 
-    return;
+    // TODO finish this
+    // float u = sample.x();
+    // int l = 0, r = areaCdf1D.size();
+    // // Find the interval [a, b): u \in [a, b), which is
+    // // the index i: u \in [cdf[i], cdf[i+1])
+    // // Upper bound.
+
+    // while (l < r) {
+    //   int mid = (r - l) / 2 + l;
+    //   if (areaCdf1D[mid] <= u)
+    //     l = mid + 1;
+    //   else
+    //     r = mid;
+    // }
+    // l--;  // u \in [cdf[l], cdf[l+1])
+
+    // // for (l = 0; l + 1 < r; l++) {
+    // //   if (areaCdf1D[l] <= u && u < areaCdf1D[l + 1]) break;
+    // // }
+
+    // u = (u - areaCdf1D[l]) / (areaCdf1D[l + 1] - areaCdf1D[l]);
+    // fillIntersection(0, l, u, sample.y(), intersection);
+    // if (pdf) *pdf = areaCdf1D[l + 1] - areaCdf1D[l];
+    // return;
   }
 
   virtual void initInternalAcceleration() override;

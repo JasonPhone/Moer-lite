@@ -4,8 +4,8 @@
   },
   "sampler" : {
     "type" : "independent",
-    "xSamples" : 8,
-    "ySamples" : 8
+    "xSamples" : 4,
+    "ySamples" : 4
   },
   "camera" : {
     "type" : "pinhole",
@@ -113,7 +113,7 @@
     "lights" : [
       {
         "type" : "areaLight",
-        "energy" : [3, 3, 3],
+        "energy" : [100, 100, 100],
         "shape" : {
           "type" : "sphere",
           "center" : [0, 1.79, 0],

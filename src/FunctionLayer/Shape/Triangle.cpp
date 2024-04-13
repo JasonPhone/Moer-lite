@@ -78,15 +78,17 @@ TriangleMesh::TriangleMesh(const Json &json) : Shape(json) {
   const auto &filepath = fetchRequired<std::string>(json, "file");
   meshData = MeshData::loadFromFile(filepath);
   // For triangle sampling based on area portion.
+  areaCdf1D.push_back(0);
   for (int i = 0; i < meshData->faceCount; i++) {
     float a = getArea(i);
     areaCdf1D.push_back(a);
     area += a;
   }
-  for (int i = 0; i < areaCdf1D.size(); i++) {
-    if (i) areaCdf1D[i] += areaCdf1D[i - 1];
+  for (int i = 1; i < areaCdf1D.size(); i++) {
     areaCdf1D[i] /= area;
+    areaCdf1D[i] += areaCdf1D[i - 1];
   }
+  std::cout << areaCdf1D[0] << " " << areaCdf1D[meshData->faceCount] << std::endl;
 }
 
 RTCGeometry TriangleMesh::getEmbreeGeometry(RTCDevice device) const {

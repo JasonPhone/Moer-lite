@@ -30,7 +30,7 @@ DirectIntegratorSampleLight::li(Ray &ray, const Scene &scene,
       auto bsdf = material->computeBSDF(intersection);
       Spectrum f = bsdf->f(-ray.direction, shadowRay.direction);
       float pdf = convertPDF(res, intersection);
-      spectrum += res.energy * f / pdf;
+      // spectrum += res.energy * f / pdf;
     }
   }
 
@@ -52,7 +52,7 @@ DirectIntegratorSampleLight::li(Ray &ray, const Scene &scene,
       Spectrum f = bsdf->f(-ray.direction, shadowRay.direction);
       lightSampleResult.pdf *= pdfLight;
       float pdf = convertPDF(lightSampleResult, intersection);
-      spectrum += lightSampleResult.energy * f / pdf;
+      // spectrum += lightSampleResult.energy * f / pdf;
     }
   }
   return spectrum;
