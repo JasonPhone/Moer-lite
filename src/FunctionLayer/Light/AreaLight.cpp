@@ -28,7 +28,7 @@ LightSampleResult AreaLight::sample(const Intersection &shadingPoint,
 
   return {energy,
           normalize(shadingPoint2sample),
-          shadingPoint2sample.length() - EPSILON,
+          shadingPoint2sample.length() - EPSILON, // distance
           sampleResult.normal,
           pdf,
           false,

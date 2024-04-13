@@ -1,6 +1,6 @@
 {
   "output" : {
-    "filename" : "const.hdr"
+    "filename" : "1.1.area-lights-power.hdr"
   },
   "sampler" : {
     "type" : "independent",

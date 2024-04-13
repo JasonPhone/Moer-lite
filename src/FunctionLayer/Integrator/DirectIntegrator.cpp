@@ -1,9 +1,9 @@
 #include "DirectIntegrator.h"
+
 #include <FunctionLayer/Material/Matte.h>
 
-Spectrum
-DirectIntegratorSampleLight::li(Ray &ray, const Scene &scene,
-                                std::shared_ptr<Sampler> sampler) const {
+Spectrum DirectIntegratorSampleLight::li(
+    Ray &ray, const Scene &scene, std::shared_ptr<Sampler> sampler) const {
   Spectrum spectrum(.0f);
   auto intersectionOpt = scene.rayIntersect(ray);
 
@@ -30,7 +30,7 @@ DirectIntegratorSampleLight::li(Ray &ray, const Scene &scene,
       auto bsdf = material->computeBSDF(intersection);
       Spectrum f = bsdf->f(-ray.direction, shadowRay.direction);
       float pdf = convertPDF(res, intersection);
-      // spectrum += res.energy * f / pdf;
+      spectrum += res.energy * f / pdf;
     }
   }
 
@@ -52,7 +52,7 @@ DirectIntegratorSampleLight::li(Ray &ray, const Scene &scene,
       Spectrum f = bsdf->f(-ray.direction, shadowRay.direction);
       lightSampleResult.pdf *= pdfLight;
       float pdf = convertPDF(lightSampleResult, intersection);
-      // spectrum += lightSampleResult.energy * f / pdf;
+      spectrum += lightSampleResult.energy * f / pdf;
     }
   }
   return spectrum;
@@ -60,9 +60,8 @@ DirectIntegratorSampleLight::li(Ray &ray, const Scene &scene,
 
 REGISTER_CLASS(DirectIntegratorSampleLight, "directSampleLight")
 
-Spectrum
-DirectIntegratorSampleBSDF ::li(Ray &ray, const Scene &scene,
-                                std::shared_ptr<Sampler> sampler) const {
+Spectrum DirectIntegratorSampleBSDF ::li(
+    Ray &ray, const Scene &scene, std::shared_ptr<Sampler> sampler) const {
   Spectrum spectrum(.0f);
   auto intersectionOpt = scene.rayIntersect(ray);
   if (!intersectionOpt.has_value()) {

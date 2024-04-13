@@ -6,7 +6,7 @@
 #include <ResourceLayer/Factory.h>
 #include <ResourceLayer/JsonUtil.h>
 class Integrator {
-public:
+ public:
   Integrator() = default;
 
   virtual ~Integrator() = default;
@@ -23,16 +23,16 @@ inline float convertPDF(const LightSampleResult &result,
   float pdf = result.pdf;
   float disance = result.distance;
   switch (result.type) {
-  case LightType::SpotLight:
-    pdf *= disance * disance;
-    break;
-  case LightType::AreaLight:
-    pdf *= disance * disance;
-    pdf /= std::abs(dot(result.normal, result.direction));
-    break;
-  //* 环境光的pdf转换在采样时已经完成
-  case LightType::EnvironmentLight:
-    break;
+    case LightType::SpotLight:
+      pdf *= disance * disance;
+      break;
+    case LightType::AreaLight:
+      pdf *= disance * disance;
+      pdf /= std::abs(dot(result.normal, result.direction));
+      break;
+    //* 环境光的pdf转换在采样时已经完成
+    case LightType::EnvironmentLight:
+      break;
   }
   return pdf;
 }
