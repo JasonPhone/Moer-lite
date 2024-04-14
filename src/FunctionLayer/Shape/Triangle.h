@@ -67,7 +67,7 @@ class TriangleMesh : public Shape {
     l--;  // u \in [cdf[l], cdf[l+1])
 
     u = (u - areaCdf1D[l]) / (areaCdf1D[l + 1] - areaCdf1D[l]);
-    fillIntersection(0, l, u, sample.y(), intersection);
+    if (intersection) fillIntersection(0, l, u, sample.y(), intersection);
     if (pdf) *pdf = (areaCdf1D[l + 1] - areaCdf1D[l]) / getArea(l);
   }
 

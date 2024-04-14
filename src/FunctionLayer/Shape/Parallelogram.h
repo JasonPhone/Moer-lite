@@ -18,7 +18,7 @@ class Parallelogram : public Shape {
                                       Intersection *intersection,
                                       float *pdf) const override;
 
-  float getArea() const override { return cross(edge0, edge1).length(); }
+  float getArea() const override { return edge0.length() * edge1.length(); }
 
  public:
   Point3f base;

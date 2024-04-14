@@ -96,8 +96,9 @@ void Sphere::uniformSampleOnSurface(Vector2f sample, Intersection *intersection,
     pdf(t) = c sint * 2pi = 0.5 sint
     pdf(p) = [0, pi] c sint dt = -c [0, pi] dcost = 2c = 1 / 2pi
 
-    cdf(t) = 0.5 [0, x] sint dt = -0.5 [0, x] dcost = -0.5 (cosx - 1) = 0.5 (1
-    - cosx) cdf(p) = x / 2pi
+    cdf(t) = 0.5 [0, x] sint dt = -0.5 [0, x] dcost
+           = -0.5 (cosx - 1) = 0.5 (1 - cosx)
+    cdf(p) = x / 2pi
 
     theta = acos(1 - 2e1)
     phi = 2pi * e2
@@ -112,7 +113,7 @@ void Sphere::uniformSampleOnSurface(Vector2f sample, Intersection *intersection,
   if (pdf) *pdf = 1.0 / getArea();
 }
 float Sphere::getArea() const {
-  Vector3f r = transform.toWorld(Vector3f{0, 0, radius}) + Vector3f{1e-5};
-  return 4 * fm::pi_f * r.length() * r.length();
+  // Vector3f r = transform.toWorld(Vector3f{0, 0, radius}) + Vector3f{1e-5};
+  return 4 * fm::pi_f * radius * radius;
 }
 REGISTER_CLASS(Sphere, "sphere")

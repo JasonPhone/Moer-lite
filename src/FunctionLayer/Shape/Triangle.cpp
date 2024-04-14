@@ -84,8 +84,10 @@ TriangleMesh::TriangleMesh(const Json &json) : Shape(json) {
     areaCdf1D.push_back(a);
     area += a;
   }
-  for (int i = 1; i < areaCdf1D.size(); i++) areaCdf1D[i] += areaCdf1D[i - 1];
-  for (int i = 1; i < areaCdf1D.size(); i++) areaCdf1D[i] /= area;
+  for (int i = 1; i < areaCdf1D.size(); i++) {
+    areaCdf1D[i] /= area;
+    areaCdf1D[i] += areaCdf1D[i - 1];
+  }
 }
 
 RTCGeometry TriangleMesh::getEmbreeGeometry(RTCDevice device) const {

@@ -97,11 +97,11 @@
         "type" : "cube",
         "transform" : {
           "rotate" : {
-            "axis" : [0, 1, 0],
-            "radian" : -0.5
+            "axis" : [1, 1, 1],
+            "radian" : -0.8
           },
           "scale" : [0.3, 0.4, 0.3],
-          "translate" : [0.6, -0.6, 0.3]
+          "translate" : [0.6, 0.3, 0]
         },
         "material" : {
           "type" : "mirror",
