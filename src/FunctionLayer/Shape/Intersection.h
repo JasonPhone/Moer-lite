@@ -22,26 +22,32 @@ struct Intersection {
 inline void computeRayDifferentials(Intersection *intersection,
                                     const Ray &ray) {
   // 计算光线微分
+  // In world space.
   do {
     if (ray.hasDifferentials) {
       Point3f p = intersection->position;
+      // Plane n[0]x + n[1]y + n[2]z = d, through p and perpendicular to n.
       Vector3f n = intersection->normal;
+      float d = dot(n, Vector3f{p[0], p[1], p[2]});
+
       Vector3f ox = Vector3f{ray.originX[0], ray.originX[1], ray.originX[2]};
       Vector3f oy = Vector3f{ray.originY[0], ray.originY[1], ray.originY[2]};
-      float d = dot(n, Vector3f{p[0], p[1], p[2]});
+
+      // Param t for intersection points of ray_x and ray_y.
       float tx = -(dot(n, ox) - d) / dot(n, ray.directionX);
       if (std::isinf(tx) || std::isnan(tx))
         break;
       float ty = -(dot(n, oy) - d) / dot(n, ray.directionY);
       if (std::isinf(ty) || std::isnan(ty))
         break;
-
+      // Intersection points.
       Point3f px = ray.origin + tx * ray.directionX;
       Point3f py = ray.origin + ty * ray.directionY;
       intersection->dpdx = px - p;
       intersection->dpdy = py - p;
 
       int dim[2];
+      // Avoid dim where n has max val.
       if (std::abs(n[0]) > std::abs(n[1]) && std::abs(n[0]) > std::abs(n[2])) {
         dim[0] = 1;
         dim[1] = 2;
@@ -53,6 +59,7 @@ inline void computeRayDifferentials(Intersection *intersection,
         dim[1] = 1;
       }
 
+      // Geometry info.
       Vector3f dpdu = intersection->dpdu;
       Vector3f dpdv = intersection->dpdv;
       Vector3f dpdx = intersection->dpdx;
