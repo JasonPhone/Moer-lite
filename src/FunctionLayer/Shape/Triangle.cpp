@@ -173,6 +173,27 @@ void TriangleMesh::fillIntersection(float distance, int primID, float u,
   tangent = normalize(cross(intersection->normal, bitangent));
   intersection->tangent = tangent;
   intersection->bitangent = bitangent;
+
+  // dpdu and dpdv.
+  Vector3f dpdu, dpdv;
+
+  // float A[2][2] = {{dpdu[dim[0]], dpdv[dim[0]]},
+  //                  {dpdu[dim[1]], dpdv[dim[1]]}};
+  // float Bx[2] = {dpdx[dim[0]], dpdx[dim[1]]};
+  // float By[2] = {dpdy[dim[0]], dpdy[dim[1]]};
+
+  auto solveLinearSystem2x2 = [](const float A[2][2], const float B[2],
+                                 float *x0, float *x1) {
+    float det = A[0][0] * A[1][1] - A[0][1] * A[1][0];
+    if (std::abs(det) < 1e-10f) return false;
+    *x0 = (A[1][1] * B[0] - A[0][1] * B[1]) / det;
+    *x1 = (A[0][0] * B[1] - A[1][0] * B[0]) / det;
+    if (std::isnan(*x0) || std::isnan(*x1)) return false;
+    return true;
+  };
+
+  intersection->dpdu = dpdu;
+  intersection->dpdv = dpdv;
 }
 
 void TriangleMesh::initInternalAcceleration() {
