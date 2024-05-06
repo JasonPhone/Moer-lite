@@ -177,11 +177,35 @@ void TriangleMesh::fillIntersection(float distance, int primID, float u,
   // dpdu and dpdv.
   Vector3f dpdu, dpdv;
 
-  // float A[2][2] = {{dpdu[dim[0]], dpdv[dim[0]]},
-  //                  {dpdu[dim[1]], dpdv[dim[1]]}};
-  // float Bx[2] = {dpdx[dim[0]], dpdx[dim[1]]};
-  // float By[2] = {dpdy[dim[0]], dpdy[dim[1]]};
+  /*
+    px - p = dpdx = Dux dpdu + Dvx dpdv
+    Dux/Dx = dudx, Dvx/Dx = dvdx, Dx = 1
+    dpdx = dudx dpdu + dvdx dpdv
+    => dudx, dvdx
 
+    pi - p0 = dpdi? = Du dp/du + Dv dp/dv
+    Du/Di = dudi, Dv/Di = dvdi, Di = 1?
+    dpdi = dudi dpdu + dvdi dpdv
+    dpxdi = duxdi dvxdi dot dpdu
+    dpydi   duydi dvydi     dpdv
+
+    // Compute triangle partial derivatives
+    Vector3f dpdu, dpdv;
+    Point2f uv[3];
+    GetUVs(uv);
+    // Compute deltas for triangle partial derivatives
+    Vector2f duv02 = uv[0] - uv[2], duv12 = uv[1] - uv[2];
+    Vector3f dp02 = p0 - p2, dp12 = p1 - p2;
+    Float determinant = duv02[0] * duv12[1] - duv02[1] * duv12[0];
+    bool degenerateUV = std::abs(determinant) < 1e-8;
+    if (!degenerateUV) {
+        Float invdet = 1 / determinant;
+        dpdu = (duv12[1] * dp02 - duv02[1] * dp12) * invdet;
+        dpdv = (-duv12[0] * dp02 + duv02[0] * dp12) * invdet;
+    }
+  */
+
+  // Solving Ax = B. (row first)
   auto solveLinearSystem2x2 = [](const float A[2][2], const float B[2],
                                  float *x0, float *x1) {
     float det = A[0][0] * A[1][1] - A[0][1] * A[1][0];
