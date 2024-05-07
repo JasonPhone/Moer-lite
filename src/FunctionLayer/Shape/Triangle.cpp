@@ -163,7 +163,7 @@ void TriangleMesh::fillIntersection(float distance, int primID, float u,
     intersection->texCoord = Vector2f{.0f, .0f};
   }
 
-  // TODO 计算交点的切线和副切线
+  // 计算交点的切线和副切线
   Vector3f tangent{1.f, 0.f, .0f};
   Vector3f bitangent;
   if (std::abs(dot(tangent, intersection->normal)) > .9f) {
@@ -175,46 +175,45 @@ void TriangleMesh::fillIntersection(float distance, int primID, float u,
   intersection->bitangent = bitangent;
 
   // dpdu and dpdv.
-  Vector3f dpdu, dpdv;
-
   /*
-    px - p = dpdx = Dux dpdu + Dvx dpdv
-    Dux/Dx = dudx, Dvx/Dx = dvdx, Dx = 1
-    dpdx = dudx dpdu + dvdx dpdv
-    => dudx, dvdx
+    p1 = p0 + Du01 dpdu + Dv01 dpdv
+    p2 = p0 + Du02 dpdu + Dv02 dpdv
+    dp01 = Du01 dpdu + Dv01 dpdv
+    dp02 = Du02 dpdu + Dv02 dpdv
 
-    pi - p0 = dpdi? = Du dp/du + Dv dp/dv
-    Du/Di = dudi, Dv/Di = dvdi, Di = 1?
-    dpdi = dudi dpdu + dvdi dpdv
-    dpxdi = duxdi dvxdi dot dpdu
-    dpydi   duydi dvydi     dpdv
-
-    // Compute triangle partial derivatives
-    Vector3f dpdu, dpdv;
-    Point2f uv[3];
-    GetUVs(uv);
-    // Compute deltas for triangle partial derivatives
-    Vector2f duv02 = uv[0] - uv[2], duv12 = uv[1] - uv[2];
-    Vector3f dp02 = p0 - p2, dp12 = p1 - p2;
-    Float determinant = duv02[0] * duv12[1] - duv02[1] * duv12[0];
-    bool degenerateUV = std::abs(determinant) < 1e-8;
-    if (!degenerateUV) {
-        Float invdet = 1 / determinant;
-        dpdu = (duv12[1] * dp02 - duv02[1] * dp12) * invdet;
-        dpdv = (-duv12[0] * dp02 + duv02[0] * dp12) * invdet;
-    }
+    dp01 = Du01 Dv01 dot dpdu
+    dp02   Du02 Dv02     dpdv
   */
+  Vector3f dpdu, dpdv;
+  Point3f p0 = transform.toWorld(
+              meshData->vertexBuffer[faceInfo[0].vertexIndex]),
+          p1 = transform.toWorld(
+              meshData->vertexBuffer[faceInfo[1].vertexIndex]),
+          p2 = transform.toWorld(
+              meshData->vertexBuffer[faceInfo[2].vertexIndex]);
+  Vector2f t0, t1, t2;
 
-  // Solving Ax = B. (row first)
-  auto solveLinearSystem2x2 = [](const float A[2][2], const float B[2],
-                                 float *x0, float *x1) {
-    float det = A[0][0] * A[1][1] - A[0][1] * A[1][0];
-    if (std::abs(det) < 1e-10f) return false;
-    *x0 = (A[1][1] * B[0] - A[0][1] * B[1]) / det;
-    *x1 = (A[0][0] * B[1] - A[1][0] * B[0]) / det;
-    if (std::isnan(*x0) || std::isnan(*x1)) return false;
-    return true;
-  };
+  if (meshData->texcodBuffer.size() != 0) {
+    t0 = meshData->texcodBuffer[faceInfo[0].texcodIndex];
+    t1 = meshData->texcodBuffer[faceInfo[1].texcodIndex];
+    t2 = meshData->texcodBuffer[faceInfo[2].texcodIndex];
+  } else {
+    t0 = Vector2f{0, 0};
+    t1 = Vector2f{0, 1};
+    t2 = Vector2f{1, 0};
+  }
+  Vector3f dp01 = p1 - p0, dp02 = p2 - p0;
+  Vector2f dt01 = t1 - t0, dt02 = t2 - t0;
+  /*
+    dp01^T = dt01^T dot dpdu^T
+    dp02^T   dt02^T     dpdv^T
+  */
+  float det = dt01[0] * dt02[1] - dt01[1] * dt02[0];
+  if (std::abs(det) >= 1e-8) {
+    float invdet = 1.0 / det;
+    dpdu = invdet * (dt02[1] * dp01 - dt01[1] * dp02);
+    dpdv = invdet * (dt01[0] * dp02 - dt02[0] * dp01);
+  }
 
   intersection->dpdu = dpdu;
   intersection->dpdv = dpdv;

@@ -1,6 +1,6 @@
 {
   "output" : {
-    "filename" : "texture.hdr"
+    "filename" : "2.1.texture.hdr"
   },
   "sampler" : {
     "type" : "independent",
@@ -38,7 +38,7 @@
             "file" : "images/pattern_new.png"
           }
         }
-      }   
+      }
     ],
     "lights" : [
       {

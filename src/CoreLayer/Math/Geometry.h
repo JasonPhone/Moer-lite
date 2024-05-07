@@ -1,14 +1,15 @@
 #pragma once
 
-#include <algorithm>
 #include <FastMath/FastMath.h>
 #include <FastMath/VecMat.h>
+
+#include <algorithm>
 //* 对于绝大部分图形应用来说，32位的浮点数足以满足计算精度需求且速度更快，故lite版仅支持float
 //* 在4维齐次坐标下对点以及向量进行变换时会有不同处理，故相较于直接使用数学意义上的向量，我们进行了一个简单的封装
 
 //* 表示三维空间中的一个向量
 struct Vector3f {
-public:
+ public:
   //* 构造函数
   Vector3f(float f = .0f) { xyz = vecmat::vec3f::fill(f); }
   Vector3f(float _x, float _y, float _z) : xyz(_x, _y, _z) {}
@@ -75,16 +76,20 @@ public:
     return (xyz[0] == 0.f) && (xyz[1] == 0.f) && (xyz[2] == 0.f);
   }
 
+  bool hasNan() const {
+    return std::isnan(xyz[0]) && std::isnan(xyz[1]) && std::isnan(xyz[2]);
+  }
+
   //* 返回向量的欧式长度
   float length() const { return xyz.len(); }
 
   //* 友函数/类声明
-public:
+ public:
   friend float dot(const Vector3f &v1, const Vector3f &v2);
   friend Vector3f cross(const Vector3f &v1, const Vector3f &v2);
   friend class Point3f;
 
-private:
+ private:
   Vector3f(const vecmat::vec3f &vec) : xyz(vec) {}
   vecmat::vec3f xyz;
 };
@@ -113,7 +118,7 @@ inline Vector3f normalize(const Vector3f &vec) {
 
 //* 表示三维空间中的一个点
 struct Point3f {
-public:
+ public:
   //* 构造函数
   Point3f(float f = .0f) { xyz = vecmat::vec3f::fill(f); }
   Point3f(float _x, float _y, float _z) : xyz(_x, _y, _z) {}
@@ -156,10 +161,10 @@ public:
   }
 
   //* 友函数/类声明
-public:
+ public:
   friend class Vector3f;
 
-private:
+ private:
   Point3f(const vecmat::vec3f &vec) : xyz(vec) {}
   vecmat::vec3f xyz;
 };
