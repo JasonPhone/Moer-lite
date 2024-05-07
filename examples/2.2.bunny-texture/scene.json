@@ -1,6 +1,6 @@
 {
   "output" : {
-    "filename" : "bunny_texture.hdr"
+    "filename" : "2.2.2.bunny_cylinder.hdr"
   },
   "sampler" : {
     "type" : "independent",
@@ -51,7 +51,7 @@
           "type" : "matte",
           "albedo" : [0.7, 0.7, 0.7]
         }
-      }   
+      }
     ],
     "lights" : [
       {
