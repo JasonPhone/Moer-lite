@@ -1,6 +1,6 @@
 {
   "output" : {
-    "filename" : "2.2.2.bunny_cylinder.hdr"
+    "filename" : "./output/2.2.2.bunny_cylinder.hdr"
   },
   "sampler" : {
     "type" : "independent",
