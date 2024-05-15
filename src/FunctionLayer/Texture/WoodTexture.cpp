@@ -14,8 +14,8 @@ Spectrum WoodTexture::evaluate(const TextureCoord& texCoord) const {
   Vector2f l[4], v[4], d[4];
   float f[4];
   for (int i = 0; i < 4; i++) {
-    float a = int(p.a[0] + (i & 1));
-    float b = int(p.a[1] + (i & 2));
+    float a = int(p.a[0] + bool(i & 1));
+    float b = int(p.a[1] + bool(i & 2));
 
     l[i] = Vector2f{a, b};
     v[i] = grad(l[i]);
