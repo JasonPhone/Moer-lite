@@ -1,11 +1,11 @@
 {
   "output" : {
-    "filename" : "bunny_texture_wood.hdr"
+    "filename" : "./output/2.2.3.bunny_texture_wood.hdr"
   },
   "sampler" : {
     "type" : "independent",
-    "xSamples" : 16,
-    "ySamples" : 16
+    "xSamples" : 6,
+    "ySamples" : 6
   },
   "camera" : {
     "type" : "pinhole",
@@ -50,7 +50,7 @@
           "type" : "matte",
           "albedo" : [0.7, 0.7, 0.7]
         }
-      }   
+      }
     ],
     "lights" : [
       {

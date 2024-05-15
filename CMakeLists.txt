@@ -33,33 +33,47 @@ add_executable(Moer
   src/FunctionLayer/Acceleration/EmbreeBVH.cpp
   src/FunctionLayer/Acceleration/Linear.cpp
   src/FunctionLayer/Acceleration/Octree.cpp
+  src/FunctionLayer/Acceleration/BVH.cpp
 
   src/FunctionLayer/Integrator/NormalIntegrator.cpp
   src/FunctionLayer/Integrator/DirectIntegrator.cpp
   src/FunctionLayer/Integrator/WhittedIntegrator.cpp
+  src/FunctionLayer/Integrator/UVIntegrator.cpp
+
   src/FunctionLayer/Camera/Camera.cpp
   src/FunctionLayer/Camera/Pinhole.cpp
+
   src/FunctionLayer/Scene/Scene.cpp
+
   src/FunctionLayer/Light/SpotLight.cpp
   src/FunctionLayer/Light/AreaLight.cpp
   src/FunctionLayer/Light/EnvironmentLight.cpp
+
   src/FunctionLayer/Shape/Shape.cpp
   src/FunctionLayer/Shape/Triangle.cpp
   src/FunctionLayer/Shape/Cube.cpp
   src/FunctionLayer/Shape/Sphere.cpp
   src/FunctionLayer/Shape/Parallelogram.cpp
+  src/FunctionLayer/Shape/Disk.cpp
+  src/FunctionLayer/Shape/Cone.cpp
+  src/FunctionLayer/Shape/Cylinder.cpp
+
   src/FunctionLayer/Texture/NormalTexture.cpp
   src/FunctionLayer/Texture/ImageTexture.cpp
   src/FunctionLayer/Texture/Texture.cpp
   src/FunctionLayer/Texture/Mipmap.cpp
+  src/FunctionLayer/Texture/WoodTexture.cpp
+
   src/FunctionLayer/Material/Matte.cpp
   src/FunctionLayer/Material/Mirror.cpp
   src/FunctionLayer/Material/Material.cpp
+
   src/FunctionLayer/Sampler/IndependentSampler.cpp
+
   src/ResourceLayer/Image.cpp
   src/ResourceLayer/Mesh.cpp
   src/ResourceLayer/FileUtil.cpp
-        src/FunctionLayer/Shape/Disk.cpp src/FunctionLayer/Shape/Disk.h src/FunctionLayer/Shape/Cone.cpp src/FunctionLayer/Shape/Cone.h src/FunctionLayer/Shape/Cylinder.cpp src/FunctionLayer/Shape/Cylinder.h src/FunctionLayer/Integrator/UVIntegrator.cpp src/FunctionLayer/Integrator/UVIntegrator.h src/FunctionLayer/Acceleration/BVH.cpp src/FunctionLayer/Acceleration/BVH.h)
+)
 
 target_include_directories(Moer PUBLIC ./externals)
 target_include_directories(Moer PUBLIC ./src)
@@ -80,7 +94,6 @@ if(APPLE)
   set(LIBS_PATH ${PROJECT_SOURCE_DIR}/libs/macos)
   set(EMBREE_DLL ${LIBS_PATH}/libembree3.3.dylib ${LIBS_PATH}/libtbb.12.2.dylib)
 endif()
-
 
 target_link_directories(Moer PUBLIC ${LIBS_PATH})
 target_link_directories(Moer PUBLIC ${PROJECT_SOURCE_DIR}/target/lib)
