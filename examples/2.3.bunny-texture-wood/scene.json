@@ -1,6 +1,6 @@
 {
   "output" : {
-    "filename" : "./output/2.2.3.bunny_texture_wood.hdr"
+    "filename" : "./output/2.3.bunny_texture_wood.hdr"
   },
   "sampler" : {
     "type" : "independent",
