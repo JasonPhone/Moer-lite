@@ -4,8 +4,8 @@
   },
   "sampler" : {
     "type" : "independent",
-    "xSamples" : 8,
-    "ySamples" : 8
+    "xSamples" : 2,
+    "ySamples" : 2
   },
   "camera" : {
     "type" : "pinhole",
@@ -25,7 +25,7 @@
   },
   "integrator" : {
     "type" : "randomWalk",
-    "max_depth": 5
+    "max_depth": 1
 
   },
   "scene" : {

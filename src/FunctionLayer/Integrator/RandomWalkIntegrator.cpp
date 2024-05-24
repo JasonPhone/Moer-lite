@@ -8,41 +8,39 @@
 
 Spectrum RandomWalkIntegrator::li(Ray &ray, const Scene &scene,
                                   std::shared_ptr<Sampler> sampler) const {
-  return liRandomWalk(ray, scene, sampler, 0);
+  Spectrum spectrum{0.f}, beta{1.f};
+  int depth = 0;
+  do {
+    Spectrum Linf{0.f};
+    // Intersection test.
+    auto intersection_opt = scene.rayIntersect(ray);
+    if (!intersection_opt.has_value()) {
+      for (auto &light : scene.infiniteLights)
+        spectrum += beta * light->evaluateEmission(ray);
+      break;
+    }
+    auto intersection = intersection_opt.value();
+    computeRayDifferentials(&intersection, ray);
+    // Le.
+    if (auto &light = intersection.shape->light; light)
+      spectrum += beta * light->evaluateEmission(intersection, -ray.direction);
+    // If should terminate.
+    if (depth == max_depth)
+      break;
+    // Get BSDF at intersection.
+    auto material = intersection.shape->material;
+    auto bsdf = material->computeBSDF(intersection);
+    // Sample BSDF.
+    auto bsdf_sample = bsdf->sample(-ray.direction, sampler->next2D());
+    // Get leaving ray.
+    ray = Ray{intersection.position, bsdf_sample.wi};
+    beta *= bsdf_sample.weight;
+    // Next step.
+  } while (1);
+  return spectrum;
 }
 Spectrum RandomWalkIntegrator::liRandomWalk(Ray &ray, const Scene &scene,
                                             std::shared_ptr<Sampler> sampler,
-                                            int depth) const {
-  Spectrum Linf{0.f};
-  // Intersection test.
-  auto intersection_opt = scene.rayIntersect(ray);
-  if (!intersection_opt.has_value()) {
-    for (auto &light : scene.infiniteLights)
-      Linf += light->evaluateEmission(ray);
-    return Linf;
-  }
-  auto intersection = intersection_opt.value();
-  computeRayDifferentials(&intersection, ray);
-  // Le.
-  Spectrum Le{0.f};
-  if (auto &light = intersection.shape->light; light)
-    Le += light->evaluateEmission(intersection, -ray.direction);
-  // If should terminate.
-  if (depth == max_depth)
-    return Le;
-  // Get BSDF at intersection.
-  auto material = intersection.shape->material;
-  auto bsdf = material->computeBSDF(intersection);
-  // Sample BSDF.
-  auto bsdf_sample = bsdf->sample(-ray.direction, sampler->next2D());
-  Spectrum f{0.f};
-  // Get leaving ray.
-  auto next_ray = Ray{intersection.position, bsdf_sample.wi};
-  // Recurse for next step.
-  f = liRandomWalk(next_ray, scene, sampler, depth + 1);
-  f *= bsdf_sample.weight / bsdf_sample.pdf;
-
-  return Le + f;
-}
+                                            int depth) const {}
 
 REGISTER_CLASS(RandomWalkIntegrator, "randomWalk")
