@@ -1,11 +1,11 @@
 {
   "output" : {
-    "filename" : "./output/cornell.png"
+    "filename" : "./output/cornell.bounce3.png"
   },
   "sampler" : {
     "type" : "independent",
-    "xSamples" : 2,
-    "ySamples" : 2
+    "xSamples" : 10,
+    "ySamples" : 10
   },
   "camera" : {
     "type" : "pinhole",
@@ -25,7 +25,7 @@
   },
   "integrator" : {
     "type" : "randomWalk",
-    "max_depth": 1
+    "max_depth": 3
 
   },
   "scene" : {

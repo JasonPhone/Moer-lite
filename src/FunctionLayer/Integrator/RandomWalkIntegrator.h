@@ -3,7 +3,7 @@
 #include "Integrator.h"
 
 class RandomWalkIntegrator : public Integrator {
-public:
+ public:
   RandomWalkIntegrator() = default;
 
   RandomWalkIntegrator(const Json &json) : Integrator(json) {
@@ -18,8 +18,7 @@ public:
 
   virtual Spectrum li(Ray &ray, const Scene &scene,
                       std::shared_ptr<Sampler> sampler) const override;
-private:
-  Spectrum liRandomWalk(Ray &ray, const Scene &scene,
-                      std::shared_ptr<Sampler> sampler, int depth) const;
-                      int max_depth;
+
+ private:
+  int max_depth;
 };

@@ -11,7 +11,6 @@ Spectrum RandomWalkIntegrator::li(Ray &ray, const Scene &scene,
   Spectrum spectrum{0.f}, beta{1.f};
   int depth = 0;
   do {
-    Spectrum Linf{0.f};
     // Intersection test.
     auto intersection_opt = scene.rayIntersect(ray);
     if (!intersection_opt.has_value()) {
@@ -30,17 +29,15 @@ Spectrum RandomWalkIntegrator::li(Ray &ray, const Scene &scene,
     // Get BSDF at intersection.
     auto material = intersection.shape->material;
     auto bsdf = material->computeBSDF(intersection);
-    // Sample BSDF.
+    // Sample BSDF randomly.
     auto bsdf_sample = bsdf->sample(-ray.direction, sampler->next2D());
     // Get leaving ray.
     ray = Ray{intersection.position, bsdf_sample.wi};
     beta *= bsdf_sample.weight;
     // Next step.
+    depth++;
   } while (1);
   return spectrum;
 }
-Spectrum RandomWalkIntegrator::liRandomWalk(Ray &ray, const Scene &scene,
-                                            std::shared_ptr<Sampler> sampler,
-                                            int depth) const {}
 
 REGISTER_CLASS(RandomWalkIntegrator, "randomWalk")
