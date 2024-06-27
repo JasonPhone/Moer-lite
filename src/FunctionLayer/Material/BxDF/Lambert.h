@@ -11,14 +11,15 @@ public:
     Vector3f woLocal = toLocal(wo), wiLocal = toLocal(wi);
     // if (woLocal[1] <= .0f || wiLocal[1] <= .0f)
     //   return Spectrum(0.f);
-    return albedo * INV_PI * std::max(wiLocal[1], 0.0f);
+    return albedo * INV_PI;
+    // return albedo * INV_PI * std::max(wiLocal[1], 0.0f);
   }
 
   virtual BSDFSampleResult sample(const Vector3f &wo,
                                   const Vector2f &sample) const override {
     Vector3f wi = squareToCosineHemisphere(sample);
     float pdf = squareToCosineHemispherePdf(wi);
-    return {albedo, toWorld(wi), pdf, BSDFType::Diffuse};
+    return {albedo * INV_PI, toWorld(wi), pdf, BSDFType::Diffuse};
   }
 
 private:

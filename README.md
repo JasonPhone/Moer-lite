@@ -2,8 +2,8 @@
 
 ## 简介
 
-Moer-lite是一个面向教学的蒙特卡洛路径追踪框架。它提供了很多已有的功能，可以避免从零开始构建渲染器时遇到的一些工程性障碍。  
-Moer-lite支持的功能不多，它只提供基础的积分方法、材质以及纹理，一些更强大的方法需要依靠同学们自己实现。  
+Moer-lite是一个面向教学的蒙特卡洛路径追踪框架。它提供了很多已有的功能，可以避免从零开始构建渲染器时遇到的一些工程性障碍。
+Moer-lite支持的功能不多，它只提供基础的积分方法、材质以及纹理，一些更强大的方法需要依靠同学们自己实现。
 Moer-lite的框架基于Moer主干：https://github.com/NJUCG/Moer .
 
 这是一片自由发挥的乐园，希望同学们学习愉快。
@@ -36,7 +36,7 @@ Moer-lite的框架基于Moer主干：https://github.com/NJUCG/Moer .
   - 对AABB进行封装（见Shape::getAABB）
   - Scene::rayIntersect、Shape::rayIntersectShape、Acceleration::rayIntersect、Integrator::li中const Ray& 修改为Ray&
   - 修改了Acceleration求交的接口，现在每个加速结构需要实现bool Acceleration::rayIntersect(Ray &ray, int *geomID, int *primID, float *u, float *v) const函数
-  
+
 - 2023-3-11
   - 增加了Octree八叉树，实现八叉树需要你实现以下两个方法
     - std::shared_ptr<OctreeNode> Octree::recursiveBuild
@@ -44,14 +44,14 @@ Moer-lite的框架基于Moer主干：https://github.com/NJUCG/Moer .
   - 增加了`examples/lab1-test0`测试场景，用于测试加速结构的效率
   - 目前可以修改配置文件中scene的acceleration参数用来测试不同的加速结构，现在可选的参数有`embree`（default）、`linear`（没有任何求交加速）、`octree`（需要实现）
   - 修改了面光源存在时运行发生段错误
-  
+
 - 2023-3-18
   lab1有关内容更新 具体请看实验手册
 
 - 2023-4-18
   更新了lab2，新增代码以及实验手册请切换到本仓库lab-2分支进行查看
   添加了lab0的手册
-  
+
 - 2023-10-6
 
   修正了lab2对于微表面模型公式中，G项的描述错误
@@ -65,4 +65,5 @@ Moer-lite的框架基于Moer主干：https://github.com/NJUCG/Moer .
 
 ---
 
-https://pbr-book.org/4ed/Introduction/pbrt_System_Overview#RandomWalkIntegrator
+除图片外还输出对应场景文件，放到一起方便检查。更多运行时调试信息。
+

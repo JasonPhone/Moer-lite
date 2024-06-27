@@ -1,4 +1,5 @@
 #include "FunctionLayer/Integrator/RandomWalkIntegrator.h"
+
 #include "CoreLayer/ColorSpace/Spectrum.h"
 #include "CoreLayer/Math/Geometry.h"
 #include "FunctionLayer/Material/BxDF/BSDF.h"
@@ -20,12 +21,9 @@ Spectrum RandomWalkIntegrator::li(Ray &ray, const Scene &scene,
     }
     auto intersection = intersection_opt.value();
     computeRayDifferentials(&intersection, ray);
-    // Le.
+    // Not evaluating light until hit one.
     if (auto &light = intersection.shape->light; light)
       spectrum += beta * light->evaluateEmission(intersection, -ray.direction);
-    // If should terminate.
-    if (depth == max_depth)
-      break;
     // Get BSDF at intersection.
     auto material = intersection.shape->material;
     auto bsdf = material->computeBSDF(intersection);
@@ -34,8 +32,8 @@ Spectrum RandomWalkIntegrator::li(Ray &ray, const Scene &scene,
     // Get leaving ray.
     ray = Ray{intersection.position, bsdf_sample.wi};
     beta *= bsdf_sample.weight;
-    // Next step.
-    depth++;
+
+    if (depth++ == max_depth) break;
   } while (1);
   return spectrum;
 }

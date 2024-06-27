@@ -40,6 +40,7 @@ add_executable(Moer
   src/FunctionLayer/Integrator/WhittedIntegrator.cpp
   src/FunctionLayer/Integrator/UVIntegrator.cpp
   src/FunctionLayer/Integrator/RandomWalkIntegrator.cpp
+  src/FunctionLayer/Integrator/SimplePathIntegrator.cpp
 
   src/FunctionLayer/Camera/Camera.cpp
   src/FunctionLayer/Camera/Pinhole.cpp

@@ -5,6 +5,11 @@
 #include <FunctionLayer/Scene/Scene.h>
 #include <ResourceLayer/Factory.h>
 #include <ResourceLayer/JsonUtil.h>
+
+struct TracingRecord {
+  std::map<std::string, int> entries;
+};
+
 class Integrator {
  public:
   Integrator() = default;
@@ -15,6 +20,8 @@ class Integrator {
 
   virtual Spectrum li(Ray &ray, const Scene &scene,
                       std::shared_ptr<Sampler> sampler) const = 0;
+
+  mutable TracingRecord record;
 };
 
 //* 将result中各种测度下的pdf都转化为立体角测度下的pdf

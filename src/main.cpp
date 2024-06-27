@@ -64,6 +64,10 @@ int main(int argc, char **argv) {
          (std::chrono::duration_cast<std::chrono::milliseconds>(end - start))
                  .count() /
              1000.f);
+  printf("tracing record:\n");
+  for (auto& kv : integrator->record.entries) {
+    printf("%s:\t%d\n", kv.first.c_str(), kv.second);
+  }
 
   //* 目前支持输出为png/hdr两种格式
   std::string outputName =

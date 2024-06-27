@@ -1,130 +1,132 @@
 {
-  "output" : {
-    "filename" : "./output/cornell.bounce3.png"
+  "output": {
+    "filename": "./output/cornell.bounce3.randomWalk.png",
+    "ffilename": "./output/cornell.bounce3.simplePath.light.bsdf.png"
   },
-  "sampler" : {
-    "type" : "independent",
-    "xSamples" : 10,
-    "ySamples" : 10
+  "sampler": {
+    "type": "independent",
+    "xSamples": 32,
+    "ySamples": 32
   },
-  "camera" : {
-    "type" : "pinhole",
-    "transform" : {
-      "position" : [0, 0.5, 6],
-      "up" : [0, 1, 0],
-      "lookAt" : [0, 0.5, 0]
+  "camera": {
+    "type": "pinhole",
+    "transform": {
+      "position": [ 0, 0, 5.5 ],
+      "up": [ 0, 1, 0 ],
+      "lookAt": [ 0, 0, 0 ]
     },
-    "tNear" : 0.1,
-    "tFar" : 10000,
-    "verticalFov" : 45,
-    "timeStart" : 0,
-    "timeEnd" : 0,
-    "film" : {
-      "size" : [600, 600]
+    "tNear": 0.1,
+    "tFar": 10000,
+    "verticalFov": 45,
+    "timeStart": 0,
+    "timeEnd": 0,
+    "film": {
+      "size": [ 600, 600 ]
     }
   },
-  "integrator" : {
-    "type" : "randomWalk",
-    "max_depth": 3
-
+  "integrator": {
+    "type": "randomWalk",
+    "max_depth": 3,
+    "sample_light": true,
+    "sample_BSDF": true
   },
-  "scene" : {
-    "shapes" : [
+  "scene": {
+    "shapes": [
       {
-        "type" : "parallelogram",
-        "base" : [-1.5, -1, -1.5],
-        "edge0" : [0, 0, 3],
-        "edge1" : [3, 0, 0],
-        "material" : {
-          "type" : "matte",
-          "albedo" : [0.9, 0.9, 0.9]
+        "type": "parallelogram",
+        "base": [ -1.5, -1.5, -1.5 ],
+        "edge0": [ 0, 0, 3 ],
+        "edge1": [ 3, 0, 0 ],
+        "material": {
+          "type": "matte",
+          "albedo": [ 0.9, 0.9, 0.9 ]
         }
       },
       {
-        "type" : "parallelogram",
-        "base" : [-1.5, 2, -1.5],
-        "edge0" : [3, 0, 0],
-        "edge1" : [0, 0, 3],
-        "material" : {
-          "type" : "matte",
-          "albedo" : [0.9, 0.9, 0.9]
+        "type": "parallelogram",
+        "base": [ -1.5, 1.5, -1.5 ],
+        "edge0": [ 3, 0, 0 ],
+        "edge1": [ 0, 0, 3 ],
+        "material": {
+          "type": "matte",
+          "albedo": [ 0.9, 0.9, 0.9 ]
         }
       },
       {
-        "type" : "parallelogram",
-        "base" : [-1.5, -1, -1.5],
-        "edge0" : [0, 3, 0],
-        "edge1" : [0, 0, 3],
-        "material" : {
-          "type" : "matte",
-          "albedo" : [0.9, 0.4, 0.4]
+        "type": "parallelogram",
+        "base": [ -1.5, -1.5, -1.5 ],
+        "edge0": [ 0, 3, 0 ],
+        "edge1": [ 0, 0, 3 ],
+        "material": {
+          "type": "matte",
+          "albedo": [ 0.9, 0.4, 0.4 ]
         }
       },
       {
-        "type" : "parallelogram",
-        "base" : [1.5, -1, -1.5],
-        "edge1" : [0, 3, 0],
-        "edge0" : [0, 0, 3],
-        "material" : {
-          "type" : "matte",
-          "albedo" : [0.4, 0.9, 0.4]
+        "type": "parallelogram",
+        "base": [ 1.5, -1.5, -1.5 ],
+        "edge1": [ 0, 3, 0 ],
+        "edge0": [ 0, 0, 3 ],
+        "material": {
+          "type": "matte",
+          "albedo": [ 0.4, 0.9, 0.4 ]
         }
       },
       {
-        "type" : "parallelogram",
-        "base" : [1.5, -1, -1.5],
-        "edge0" : [0, 3, 0],
-        "edge1" : [-3, 0, 0],
-        "material" : {
-          "type" : "matte",
-          "albedo" : [0.9, 0.9, 0.9]
+        "type": "parallelogram",
+        "base": [ 1.5, -1.5, -1.5 ],
+        "edge0": [ 0, 3, 0 ],
+        "edge1": [ -3, 0, 0 ],
+        "material": {
+          "type": "matte",
+          "albedo": [ 0.9, 0.9, 0.9 ]
         }
       },
       {
-        "type" : "cube",
-        "transform" : {
-          "rotate" : {
-            "axis" : [0, 1, 0],
-            "radian" : 0.5
+        "type": "cube",
+        "transform": {
+          "rotate": {
+            "axis": [ 0, 1, 0 ],
+            "radian": 0.5
           },
-          "scale" : [0.45, 0.8, 0.45],
-          "translate" : [-0.5, -0.2, -0.6]
+          "scale": [ 0.45, 0.8, 0.45 ],
+          "translate": [ -0.5, -0.7, -0.6 ]
         },
-        "material" : {
-          "type" : "matte",
-          "albedo" : [0.9, 0.9 , 0.9]
+        "material": {
+          "type": "matte",
+          "albedo": [ 0.9, 0.9, 0.9 ]
         }
       },
       {
-        "type" : "cube",
-        "transform" : {
-          "rotate" : {
-            "axis" : [0, 1, 0],
-            "radian" : -0.5
+        "type": "cube",
+        "transform": {
+          "rotate": {
+            "axis": [ 0, 1, 0 ],
+            "radian": -0.5
           },
-          "scale" : [0.3, 0.4, 0.3],
-          "translate" : [0.6, -0.6, 0.3]
+          "scale": [ 0.3, 0.3, 0.3 ],
+          "translate": [ 0.6, -1.0, 0.3 ]
         },
-        "material" : {
-          "type_old" : "mirror",
-          "type" : "matte",
-          "albedo" : [0.9, 0.9 , 0.9]
+        "material": {
+          "type_old": "mirror",
+          "type": "matte",
+          "albedo": [ 0.9, 0.9, 0.9 ]
         }
       }
 
     ],
-    "lights" : [
+    "lights": [
       {
-        "type" : "areaLight",
-        "energy" : [30, 30, 30],
-        "shape" : {
-          "type" : "parallelogram",
-          "base" : [-0.3, 1.99, -0.3],
-          "edge0" : [0.6, 0, 0],
-          "edge1" : [0, 0, 0.6],
-          "material" : {
-            "type" : "matte",
-            "albedo" : [5, 5, 5]
+        "type": "areaLight",
+        "energy": [ 30, 30, 30 ],
+        "shape": {
+          "type": "parallelogram",
+          "base": [ -0.3, 1.49, -0.3 ],
+          "edge0": [ 0.6, 0, 0 ],
+          "edge1": [ 0, 0, 0.6 ],
+          "material": {
+            "type": "matte",
+            "albedo": [ 5, 5, 5 ]
           }
         }
       }
