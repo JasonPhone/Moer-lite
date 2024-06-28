@@ -66,9 +66,10 @@ add_executable(Moer
   src/FunctionLayer/Texture/Mipmap.cpp
   src/FunctionLayer/Texture/WoodTexture.cpp
 
+  src/FunctionLayer/Material/Material.cpp
   src/FunctionLayer/Material/Matte.cpp
   src/FunctionLayer/Material/Mirror.cpp
-  src/FunctionLayer/Material/Material.cpp
+  src/FunctionLayer/Material/Glass.cpp
 
   src/FunctionLayer/Sampler/IndependentSampler.cpp
 

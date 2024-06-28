@@ -1,12 +1,12 @@
 {
   "output": {
     "filename": "./output/cornell.bounce3.randomWalk.png",
-    "ffilename": "./output/cornell.bounce3.simplePath.light.bsdf.png"
+    "filename": "./output/cornell.bounce6.simplePath.light.bsdf.png"
   },
   "sampler": {
     "type": "independent",
-    "xSamples": 32,
-    "ySamples": 32
+    "xSamples": 8,
+    "ySamples": 8
   },
   "camera": {
     "type": "pinhole",
@@ -25,8 +25,8 @@
     }
   },
   "integrator": {
-    "type": "randomWalk",
-    "max_depth": 3,
+    "type": "simplePath",
+    "max_depth": 6,
     "sample_light": true,
     "sample_BSDF": true
   },
@@ -105,12 +105,14 @@
             "radian": -0.5
           },
           "scale": [ 0.3, 0.3, 0.3 ],
-          "translate": [ 0.6, -1.0, 0.3 ]
+          "translate": [ 0.8, -1.0, 0.3 ]
         },
         "material": {
           "type_old": "mirror",
-          "type": "matte",
-          "albedo": [ 0.9, 0.9, 0.9 ]
+          "type": "glass",
+          "ior": 1.52,
+          "albedoR": [ 0.9, 0.9, 0.9 ],
+          "albedoT": [ 0.9, 0.9, 0.9 ]
         }
       }
 

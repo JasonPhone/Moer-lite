@@ -13,25 +13,25 @@ Spectrum RandomWalkIntegrator::li(Ray &ray, const Scene &scene,
   int depth = 0;
   do {
     // Intersection test.
-    auto intersection_opt = scene.rayIntersect(ray);
-    if (!intersection_opt.has_value()) {
+    auto si = scene.rayIntersect(ray);
+    if (!si.has_value()) {
       for (auto &light : scene.infiniteLights)
         spectrum += beta * light->evaluateEmission(ray);
       break;
     }
-    auto intersection = intersection_opt.value();
-    computeRayDifferentials(&intersection, ray);
+    auto its = si.value();
+    computeRayDifferentials(&its, ray);
     // Not evaluating light until hit one.
-    if (auto &light = intersection.shape->light; light)
-      spectrum += beta * light->evaluateEmission(intersection, -ray.direction);
+    if (auto &light = its.shape->light; light)
+      spectrum += beta * light->evaluateEmission(its, -ray.direction);
     // Get BSDF at intersection.
-    auto material = intersection.shape->material;
-    auto bsdf = material->computeBSDF(intersection);
+    auto material = its.shape->material;
+    auto bsdf = material->computeBSDF(its);
     // Sample BSDF randomly.
-    auto bsdf_sample = bsdf->sample(-ray.direction, sampler->next2D());
+    auto bs = bsdf->sample(-ray.direction, sampler->next2D());
     // Get leaving ray.
-    ray = Ray{intersection.position, bsdf_sample.wi};
-    beta *= bsdf_sample.weight;
+    ray = Ray{its.position, bs.wi};
+    beta *= bs.weight * abs(dot(bs.wi, its.normal)) / bs.pdf;
 
     if (depth++ == max_depth) break;
   } while (1);

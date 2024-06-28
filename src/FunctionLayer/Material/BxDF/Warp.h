@@ -34,3 +34,23 @@ inline Vector3f squareToCosineHemisphere(const Vector2f& sample) {
 inline float squareToCosineHemispherePdf(const Vector3f& v) {
   return (v[1] > .0f) ? v[1] * INV_PI : .0f;
 }
+
+inline float dielectricReflectance(float eta, float cos_theta_I,
+                                   float* cos_theta_T) {
+  if (cos_theta_I < 0.0) {
+    eta = 1.0 / eta;
+    cos_theta_I = -cos_theta_I;
+  }
+  float sin_theta_T_sq = eta * eta * (1.0f - cos_theta_I * cos_theta_I);
+  if (sin_theta_T_sq > 1.0) {
+    *cos_theta_T = 0.0;
+    return 1.0;
+  }
+  *cos_theta_T = fm::sqrt(std::max(1.0 - sin_theta_T_sq, 0.0));
+
+  float cos_tt = *cos_theta_T;
+  float Rs = (eta * cos_theta_I - cos_tt) / (eta * cos_theta_I + cos_tt);
+  float Rp = (eta * cos_tt - cos_theta_I) / (eta * cos_tt + cos_theta_I);
+
+  return (Rs * Rs + Rp * Rp) * 0.5;
+}
