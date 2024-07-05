@@ -92,7 +92,7 @@ Spectrum SimplePathIntegrator::li(Ray &ray, const Scene &scene,
     if (sample_BSDF_) {
       auto bs = bsdf->sample(wo, sampler->next2D());
       // BSDF out direction.
-      // TODO Correction?
+      // The cos term is from geometry.
       beta *= bs.weight * abs(dot(bs.wi, its.normal)) / bs.pdf;
       // beta *= bs.weight * abs(dot(bs.wi, its.normal));
       from_specular = bs.type == BSDFType::Specular;
