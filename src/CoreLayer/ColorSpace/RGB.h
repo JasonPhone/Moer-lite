@@ -3,7 +3,7 @@
 //* 使用RGB三通道颜色空间
 
 class SpectrumRGB {
-public:
+ public:
   SpectrumRGB() : rgb(0.f) {}
 
   SpectrumRGB(float f) : rgb(f) {}
@@ -77,7 +77,15 @@ public:
     fflush(stdout);
   }
 
-private:
+  float Y() const {
+    /**
+     * @brief Adobe RGB(1998) to XYZ in D50,
+     *        see http://brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+     */
+    return rgb[0] * 0.3111242 + rgb[1] * 0.6256560 + rgb[2] * 0.0632197;
+  }
+
+ private:
   Vector3f rgb;
 };
 

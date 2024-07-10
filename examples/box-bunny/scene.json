@@ -1,6 +1,7 @@
 {
   "output": {
-    "filename": "./output/box-bunny.bounce16.spp16.png"
+    "filenames": "./output/box-bunny.guided.b8.png",
+    "filename": "./output/box-bunny.simple.b8.png"
   },
   "sampler": {
     "type": "independent",
@@ -24,10 +25,12 @@
     }
   },
   "integrator": {
+    "types": "guidedPath",
     "type": "simplePath",
-    "max_depth": 16,
+    "iteration": 4,
+    "max_depth": 8,
     "sample_light": true,
-    "sample_BSDF": true
+    "sample_BSDF": false
   },
   "scene": {
     "shapes": [
@@ -94,42 +97,7 @@
           "type": "matte",
           "albedo": [ 0.9, 0.9, 0.9 ]
         }
-      },
-      {
-        "type": "cube",
-        "transform": {
-          "scale": [ 0.8, 0.8, 0.8 ],
-          "rotate": {
-            "axis": [ 0.3, 0.4, 0.5 ],
-            "radian": 1.0
-          },
-          "translate": [ 0, 0, 0 ]
-        },
-        "material": {
-          "type": "glass",
-          "ior": 1.52,
-          "albedoR": [ 0.9, 0.9, 0.9 ],
-          "albedoT": [ 0.9, 0.9, 0.9 ]
-        }
-      },
-      {
-        "type": "cube",
-        "transform": {
-          "scale": [ 0.75, 0.75, 0.75 ],
-          "rotate": {
-            "axis": [ 0.3, 0.4, 0.5 ],
-            "radian": 1.0
-          },
-          "translate": [ 111110, 0, 0 ]
-        },
-        "material": {
-          "type": "glass",
-          "ior": 1.0,
-          "albedoR": [ 0.9, 0.9, 0.9 ],
-          "albedoT": [ 0.9, 0.9, 0.9 ]
-        }
       }
-
     ],
     "lights": [
       {

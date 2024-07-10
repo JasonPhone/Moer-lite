@@ -21,6 +21,9 @@ class Integrator {
   virtual Spectrum li(Ray &ray, const Scene &scene,
                       std::shared_ptr<Sampler> sampler) const = 0;
 
+  virtual void adaptScene(const Scene& scene) {}
+  virtual void preSampling() {}
+  virtual void postSampling(int spp) {}
   mutable TracingRecord record;
 };
 

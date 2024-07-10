@@ -4,7 +4,7 @@
 #include <FunctionLayer/Light/Light.h>
 #include <ResourceLayer/JsonUtil.h>
 class Scene {
-public:
+ public:
   Scene() = delete;
 
   Scene(const Json &json);
@@ -17,9 +17,11 @@ public:
 
   float pdf(std::shared_ptr<Light> light) const;
 
+  AABB boundingBox() const { return acceleration->boundingBox; }
+
   std::vector<std::shared_ptr<InfiniteLight>> infiniteLights;
 
-private:
+ private:
   std::shared_ptr<Acceleration> acceleration;
 
   Distribution<std::shared_ptr<Light>> lightDistribution;

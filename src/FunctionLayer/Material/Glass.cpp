@@ -3,7 +3,7 @@
 #include "./BxDF/Dielectric.h"
 #include "FunctionLayer/Texture/ConstantTexture.h"
 
-GlassMaterial::GlassMaterial(const Json &json) : Material(json) {
+GlassMaterial::GlassMaterial(const Json& json) : Material(json) {
   // ior, R, T.
   ior_ = fetchOptional(json, "ior", 1.52);  // Common glass.
   auto s = fetchRequired<Spectrum>(json, "albedoR");
@@ -13,7 +13,7 @@ GlassMaterial::GlassMaterial(const Json &json) : Material(json) {
 }
 
 std::shared_ptr<BSDF> GlassMaterial::computeBSDF(
-    const Intersection &intersection) const {
+    const Intersection& intersection) const {
   Vector3f normal, tangent, bitangent;
   computeShadingGeometry(intersection, &normal, &tangent, &bitangent);
   Spectrum spec_R = albedo_R_->evaluate(intersection);

@@ -3,7 +3,7 @@
 #include <FunctionLayer/Ray/Ray.h>
 // Axis-aligned Bounding box，即AABB
 class AABB {
-public:
+ public:
   AABB() {
     pMin = Point3f{FLT_MAX, FLT_MAX, FLT_MAX};
     pMax = Point3f{-FLT_MAX, -FLT_MAX, -FLT_MAX};
@@ -25,7 +25,13 @@ public:
                     float *tMax = nullptr) const;
 
   Point3f Center() const;
+  /**
+   * @param p A point.
+   * @return true If p is in this AABB,
+   *         which means pMin <= p < pMax for each axis.
+   */
+  bool Contains(const Point3f &p) const;
 
-public:
+ public:
   Point3f pMin, pMax;
 };

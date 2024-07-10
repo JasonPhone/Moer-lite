@@ -13,6 +13,7 @@ void EmbreeBVH::build() {
     //* 添加至embree中
     rtcAttachGeometry(scene, geometry);
     rtcReleaseGeometry(geometry);
+    boundingBox.Expand(shape->getAABB());
   }
   //* 提交当前场景，构建加速结构
   rtcCommitScene(scene);
@@ -40,8 +41,7 @@ bool EmbreeBVH::rayIntersect(Ray &ray, int *geomID, int *primID, float *u,
   rtcIntersect1(scene, &context, &rtcRayHit);
 
   //* 如果光线与加速结构没有交点
-  if (rtcRayHit.hit.geomID == RTC_INVALID_GEOMETRY_ID)
-    return false;
+  if (rtcRayHit.hit.geomID == RTC_INVALID_GEOMETRY_ID) return false;
 
   //* 有交点，填充intersection数据结构
   ray.tFar = rtcRayHit.ray.tfar;

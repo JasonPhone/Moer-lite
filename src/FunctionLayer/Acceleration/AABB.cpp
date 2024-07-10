@@ -45,22 +45,24 @@ bool AABB::RayIntersect(const Ray &ray, float *tMin, float *tMax) const {
     float invDir = 1.f / ray.direction[i];
     float t0 = (pMin[i] - ray.origin[i]) * invDir,
           t1 = (pMax[i] - ray.origin[i]) * invDir;
-    if (t0 > t1)
-      std::swap(t0, t1);
+    if (t0 > t1) std::swap(t0, t1);
     tNear = std::max(tNear, t0);
     tFar = std::min(tFar, t1);
 
-    if (tNear > tFar)
-      return false;
+    if (tNear > tFar) return false;
   }
-  if (tMin)
-    *tMin = tNear;
-  if (tMax)
-    *tMax = tFar;
+  if (tMin) *tMin = tNear;
+  if (tMax) *tMax = tFar;
   return true;
 }
 
 Point3f AABB::Center() const {
   return Point3f{(pMin[0] + pMax[0]) * .5f, (pMin[1] + pMax[1]) * .5f,
                  (pMin[2] + pMax[2]) * .5f};
+}
+
+bool AABB::Contains(const Point3f &p) const {
+  bool ret = true;
+  for (int i = 0; i < 3; i++) ret = ret && pMin[i] <= p[i] && p[i] < pMax[i];
+  return ret;
 }
